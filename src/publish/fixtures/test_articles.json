@@ -1,0 +1,112 @@
+[
+  {
+    "pk": 1, 
+    "model": "auth.user", 
+    "fields": {
+      "username": "test", 
+      "first_name": "test", 
+      "last_name": "user", 
+      "is_active": true, 
+      "is_superuser": true, 
+      "is_staff": true, 
+      "last_login": "2010-08-10 14:25:04", 
+      "groups": [], 
+      "user_permissions": [], 
+      "password": "sha1$229f9$0ca21114e2335f00247740746cc734a5714bc9d5", 
+      "email": "user@test.com", 
+      "date_joined": "2010-07-23 19:11:47"
+    }
+  },
+  {
+    "pk": 1, 
+    "model": "articles.articlestatus", 
+    "fields": {
+      "ordering": 0, 
+      "is_live": false, 
+      "name": "Draft"
+    }
+  },
+  {
+    "pk": 2, 
+    "model": "articles.articlestatus", 
+    "fields": {
+      "ordering": 1, 
+      "is_live": true, 
+      "name": "Finished"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "articles.tag",
+    "fields": {
+      "name": "tag1"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "articles.tag",
+    "fields": {
+      "name": "tag2"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "articles.article",
+    "fields": {
+      "status": 1,
+      "rendered_content": "",
+      "login_required": false,
+      "addthis_username": "test",
+      "description": "Post description...",
+      "addthis_use_author": true,
+      "author": 1,
+      "expiration_date": null,
+      "markup": "h",
+      "title": "This is my title",
+      "is_active": true,
+      "sites": [],
+      "use_addthis_button": false,
+      "content": "<div class=\"section\" id=\"this-is-my-title\">\n<h1>This is my title</h1>\n<p>Foobar! Jackass!</p>\n<div class=\"codeblock\"><div class=\"highlight\"><pre><span class=\"n\">stuff</span> <span class=\"o\">=</span> <span class=\"mi\">1</span>\n</pre></div>\n</div><div class=\"section\" id=\"a-smaller-title\">\n<h2>A smaller title</h2>\n</div>\n</div>\n",
+      "publish_date": "2010-07-24 13:00",
+      "keywords": "foo, bar",
+      "slug": "this-is-my-title",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "pk": 2,
+    "model": "articles.article",
+    "fields": {
+      "status": 1,
+      "rendered_content": "",
+      "login_required": false,
+      "addthis_username": "test",
+      "description": "Post description...",
+      "addthis_use_author": true,
+      "author": 1,
+      "expiration_date": null,
+      "markup": "h",
+      "title": "This is my title",
+      "is_active": true,
+      "sites": [],
+      "use_addthis_button": false,
+      "content": "<div class=\"section\" id=\"this-is-my-title\">\n<h1>This is my title</h1>\n<p>Foobar! Jackass!</p>\n<div class=\"codeblock\"><div class=\"highlight\"><pre><span class=\"n\">stuff</span> <span class=\"o\">=</span> <span class=\"mi\">1</span>\n</pre></div>\n</div><div class=\"section\" id=\"a-smaller-title\">\n<h2>A smaller title</h2>\n</div>\n</div>\n",
+      "publish_date": "2010-07-24 13:00",
+      "related_articles": [
+        1
+      ],
+      "keywords": "foo, bar",
+      "followup_for": [
+        1
+      ],
+      "slug": "this-is-my-title-1",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  }
+]

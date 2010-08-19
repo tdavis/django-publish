@@ -1,0 +1,2 @@
+- Support Django's ``sites`` framework (``django-articles`` already does this)
+- Switch to ``django-tagging`` (requires fork of ``django-articles``)

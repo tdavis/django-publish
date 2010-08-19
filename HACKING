@@ -1,0 +1,13 @@
+Development setup
+=================
+
+To create a buildout,
+
+  $ pip install -r requirements.txt
+  $ python setup.py develop
+
+Testing
+-------
+
+In order to run tests you must have ``nose`` and ``django-nose`` properly installed.
+You must also have ``publish`` in your ``INSTALLED_APPS``.
