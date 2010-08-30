@@ -55,7 +55,7 @@ class PublishTests(TestCase):
         """
         Test ``status`` filter and use of conf defaults
         """
-        status = ArticleStatus.objects.get(name='Draft')
+        status = ArticleStatus.objects.get(name='Finished')
         self.assertEqual(filter_field('status', self.meta), status)
 
     def test_author(self):
