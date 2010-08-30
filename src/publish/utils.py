@@ -3,9 +3,9 @@ from docutils.core import publish_doctree, Publisher
 from docutils.readers.doctree import Reader
 from docutils.writers import html4css1
 from publish.conf import FIELD_DEFAULTS, FILTER_DEFAULTS
+from django.conf import settings
 # also bootstraps pygment's docutils support
 from articles.models import Article
-from django.conf import settings
 
 
 class ConfigurationError(Exception): pass
