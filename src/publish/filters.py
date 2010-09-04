@@ -13,8 +13,10 @@ def article_slugs(text):
 
     :returns: ``QuerySet`` of :class:`Articles`
     """
+    from publish.conf import DB
+
     slugs = text.split('\n')
-    return Article.objects.filter(slug__in=slugs)
+    return Article.objects.using(DB).filter(slug__in=slugs)
 
 def tags(tagstr):
     """
@@ -25,6 +27,8 @@ def tags(tagstr):
     
     :param tagstr: Tags in the form, ``one two three``.
     """
-    tag = lambda n: Tag.objects.get_or_create(name=Tag.clean_tag(n))[0]
+    from publish.conf import DB
+
+    tag = lambda n: Tag.objects.using(DB).get_or_create(name=Tag.clean_tag(n))[0]
     return [tag(t) for t in tagstr.split()]
 

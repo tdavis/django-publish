@@ -5,7 +5,7 @@ from django.template.defaultfilters import slugify
 from articles.models import Article
 from publish.utils import parse_meta_and_article, filter_field
 from publish.utils import ConfigurationError
-from publish.conf import FIELD_TO_KWARG, SAVE_NEEDED, REQUIRED_FIELDS
+from publish.conf import FIELD_TO_KWARG, SAVE_NEEDED, REQUIRED_FIELDS, DB
 
 
 def setfield(article, name, value, debug=False):
@@ -51,7 +51,7 @@ def publish(f, draft, by=None, publish=None, is_active=True, login_required=Fals
     })
     slug = slugify(meta['title'])
     # New or updated?
-    articles = Article.objects.filter(slug=slug)
+    articles = Article.objects.using(DB).filter(slug=slug)
     if len(articles) > 1:
         if not publish:
             raise ConfigurationError('Title ambiguous; supply publish date')
@@ -72,11 +72,11 @@ def publish(f, draft, by=None, publish=None, is_active=True, login_required=Fals
             setfield(article, key, value, debug)
         else:
             todo.append((key, value))
-    article.save()
+    article.save(using=DB)
 
     for key, value in todo:
         setfield(article, key, value, debug)
-    article.save()
+    article.save(using=DB)
 
     return article
 
