@@ -1,8 +1,10 @@
 import os
+from StringIO import StringIO
 from django.test import TestCase
 from django.conf import settings
 from django.contrib.auth.models import User
 from docutils.core import publish_doctree
+from publish import publish
 from publish.utils import parts_from_doctree, parse_meta_and_article, filter_field
 from publish.utils import ConfigurationError
 from articles.models import Article, ArticleStatus, Tag
@@ -70,4 +72,38 @@ class PublishTests(TestCase):
         """
         tagqs = Tag.objects.all()
         self.assertEqual(list(tagqs), filter_field('tags', self.meta))
+
+    def test_publish_update(self):
+        """
+        Publish an article update
+        """
+        f = open(os.path.join(here, 'sample.rst'))
+
+        publish(f, draft=True, login_required=True)
+        updated_article = Article.objects.get(pk=1)
+        self.assertFalse(self.article.login_required)
+        self.assertTrue(updated_article.login_required)
+
+    def test_publish_new(self):
+        """
+        Publish a new article
+        """
+        # Make a different title
+        title = 'Here is another article'
+        pubstr = '2020-09-01 12:00'
+        pubdate = filter_field('publish', { 'publish': pubstr })
+        contents = open(os.path.join(here, 'sample.rst')).read().replace(
+            'This is my title', title)
+        f = StringIO(contents)
+
+        a = publish(f, draft=True, publish=pubstr, debug=True)
+        self.assertNotEqual(a.pk, self.article.pk)
+        self.assertEqual(a.title, title)
+        self.assertEqual(a.publish_date, pubdate)
+        self.assertTrue('Some content' in a.content)
+        followups = a.followup_for.all()
+        self.assertTrue(self.article.pk in [a.pk for a in followups], followups)
+        related = a.related_articles.all()
+        # We have to use titles due to ambiguous slug
+        self.assertTrue(self.article.title in [b.title for b in related], related)
 

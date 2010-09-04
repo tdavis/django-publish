@@ -6,6 +6,7 @@
 :related:
     this-is-my-title
 :publish: 2010-09-01 12:00
+:by: test
 
 This is my title
 ================

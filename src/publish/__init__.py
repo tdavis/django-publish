@@ -1,9 +1,84 @@
 #!/usr/bin/env python
 
-import argparse, sys
-from pprint import pprint
-from publish.utils import parse_meta_and_article
+import argparse
+from django.template.defaultfilters import slugify
+from articles.models import Article
+from publish.utils import parse_meta_and_article, filter_field
+from publish.utils import ConfigurationError
+from publish.conf import FIELD_TO_KWARG, SAVE_NEEDED, REQUIRED_FIELDS
 
+
+def setfield(article, name, value, debug=False):
+    """
+    Simple function to keep things DRY
+    """
+    key = FIELD_TO_KWARG.get(name, name)
+    try:
+        setattr(article, key, value)
+        if debug:
+            print 'Set `%s` (as `%s`) -> %s' % (name, key, value)
+    except ValueError:
+        raise ValueError('Set primary key on Article to modify `%s`' % key)
+
+
+def publish(f, draft, by=None, publish=None, is_active=True, login_required=False, debug=False):
+    """
+    Publishes an article.
+
+    :param f: The file to parse
+    :type f: file
+    :param by: Author name
+    :type by: str
+    :param draft: Save as draft?
+    :type draft: bool
+    :param draft: Article active?
+    :type draft: bool
+    :param draft: Require login?
+    :type draft: bool
+    :param publish: When to publish
+    :type publish: datetime fmt=YYYY-MM-DD HH:MM
+    :param debug: Print debug data
+    :type debug: bool
+
+    :returns: Saved :class:`Article`
+    """
+    meta, content = parse_meta_and_article(f.read())
+    meta.update({
+        'status': draft and 'Draft' or meta['status'],
+        'publish': publish or meta['publish'],
+        'is_active': is_active,
+        'login_required': login_required
+    })
+    slug = slugify(meta['title'])
+    # New or updated?
+    articles = Article.objects.filter(slug=slug)
+    if len(articles) > 1:
+        if not publish:
+            raise ConfigurationError('Title ambiguous; supply publish date')
+        articles.filter(publish_date=meta['publish'])
+        article = articles[0]
+    elif len(articles) == 1:
+        article = articles[0]
+    else:
+        article = Article()
+
+    article.content = content
+
+    todo = []
+    keys = list(meta.keys())
+    for key in keys + [k for k in REQUIRED_FIELDS if k not in keys]:
+        value = filter_field(key, meta)
+        if key not in SAVE_NEEDED:
+            setfield(article, key, value, debug)
+        else:
+            todo.append((key, value))
+    article.save()
+
+    for key, value in todo:
+        setfield(article, key, value, debug)
+    article.save()
+
+    return article
 
 def main():
     """
@@ -22,7 +97,9 @@ def main():
     parser.add_argument('--publish -p', type=str, metavar='YYYY-MM-DD HH:MM',
                         help='When to publish the article (overrides in-file '
                         'value, if any)', default=None, dest='publish')
+    parser.add_argument('--debug', action='store_true', default=False,
+                        help='Print debugging info', dest='debug')
     args = parser.parse_args()
-    f = open(args.path, 'r')
-    meta, content = parse_meta_and_article(f.read())
+    article = publish(args.path, args.draft, args.publish, args.is_active, args.login_required, args.debug)
+    print '%s (pk=%d) saved as %s' % (article.title, article.pk, article.status.name)
 
