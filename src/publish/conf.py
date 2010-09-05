@@ -23,6 +23,7 @@ FILTER_DEFAULTS = {
     'follow-up': article_slugs,
     'related': article_slugs,
     'status': lambda status: ArticleStatus.objects.using(DB).get(name=status),
+    'use_addthis': lambda a: bool(a),
     'addthis': lambda a: bool(a),
     'publish': lambda d: datetime.strptime(d, '%Y-%m-%d %H:%M'),
     'expire': lambda d: datetime.strptime(d, '%Y-%m-%d %H:%M'),
