@@ -38,7 +38,7 @@ FILTER_DEFAULTS = {
 SAVE_NEEDED = ('follow-up', 'related', 'tags')
 
 # `django-articles` needs these, at least
-REQUIRED_FIELDS = ('title', 'by')
+REQUIRED_FIELDS = ['title', 'by']
 
 # Convert our tag names to field names
 FIELD_TO_KWARG = {

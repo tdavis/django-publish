@@ -6,6 +6,7 @@ from articles.models import Article
 from publish.utils import parse_meta_and_article, filter_field
 from publish.utils import ConfigurationError
 from publish.conf import FIELD_TO_KWARG, SAVE_NEEDED, REQUIRED_FIELDS, DB
+from publish.conf import FIELD_DEFAULTS
 
 
 def setfield(article, name, value, debug=False):
@@ -20,14 +21,13 @@ def setfield(article, name, value, debug=False):
     except ValueError:
         raise ValueError('Set primary key on Article to modify `%s`' % key)
 
-
 def publish(f, draft, by=None, publish=None, is_active=True, login_required=False, debug=False):
     """
     Publishes an article.
 
     :param f: The file to parse
     :type f: file
-    :param by: Author name
+    :param by: Author username
     :type by: str
     :param draft: Save as draft?
     :type draft: bool
@@ -44,11 +44,15 @@ def publish(f, draft, by=None, publish=None, is_active=True, login_required=Fals
     """
     meta, content = parse_meta_and_article(f.read())
     meta.update({
-        'status': draft and 'Draft' or meta['status'],
-        'publish': publish or meta['publish'],
         'is_active': is_active,
-        'login_required': login_required
+        'login_required': login_required,
     })
+    if draft:
+        meta['status'] = 'Draft'
+    if publish:
+        meta['publish'] = publish
+    if by:
+        meta['by'] = by
     slug = slugify(meta['title'])
     # New or updated?
     articles = Article.objects.using(DB).filter(slug=slug)
@@ -66,7 +70,7 @@ def publish(f, draft, by=None, publish=None, is_active=True, login_required=Fals
 
     todo = []
     keys = list(meta.keys())
-    for key in keys + [k for k in REQUIRED_FIELDS if k not in keys]:
+    for key in keys + [k for k in REQUIRED_FIELDS+FIELD_DEFAULTS.keys() if k not in keys]:
         value = filter_field(key, meta)
         if key not in SAVE_NEEDED:
             setfield(article, key, value, debug)
@@ -87,6 +91,8 @@ def main():
     parser = argparse.ArgumentParser(description='Article Publisher')
     parser.add_argument('path', type=argparse.FileType('r'),
                         help='Relative or absolute path to article')
+    parser.add_argument('--by -b', type=str, metavar='name',
+                        help='Author (by name)', default='', dest='by')
     parser.add_argument('--draft -d', action='store_true', default=False,
                         help='Publish as a draft only', dest='draft')
     parser.add_argument('--noactive', action='store_false', default=True,
@@ -96,10 +102,10 @@ def main():
                         dest='login_required')
     parser.add_argument('--publish -p', type=str, metavar='YYYY-MM-DD HH:MM',
                         help='When to publish the article (overrides in-file '
-                        'value, if any)', default=None, dest='publish')
+                        'value, if any)', default='', dest='publish')
     parser.add_argument('--debug', action='store_true', default=False,
                         help='Print debugging info', dest='debug')
     args = parser.parse_args()
-    article = publish(args.path, args.draft, args.publish, args.is_active, args.login_required, args.debug)
+    article = publish(args.path, args.draft, args.by, args.publish, args.is_active, args.login_required, args.debug)
     print '%s (pk=%d) saved as %s' % (article.title, article.pk, article.status.name)
 
