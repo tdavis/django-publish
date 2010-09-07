@@ -7,3 +7,4 @@ tmp
 build
 dist
 distribute-*
+docs/html
