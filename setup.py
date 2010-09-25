@@ -1,23 +1,19 @@
 from distribute_setup import use_setuptools
 use_setuptools()
-
 import sys, os
 from setuptools import setup, find_packages
+
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 NEWS = open(os.path.join(here, 'NEWS')).read()
 
-
 version = '0.1'
 
 install_requires = [
     'docutils==0.7',
-    'django-articles',
     'argparse',
-    'django'
 ]
-
 
 setup(name='django-publish',
     version=version,
@@ -41,3 +37,4 @@ setup(name='django-publish',
             ['publish=publish:main']
     }
 )
+
