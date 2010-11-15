@@ -8,7 +8,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 NEWS = open(os.path.join(here, 'NEWS')).read()
 
-version = '1.0'
+version = '1.0.1'
 
 install_requires = [
     'docutils==0.7',
@@ -32,7 +32,7 @@ setup(name='django-publish',
     keywords='django django-articles reST publish blog',
     author='Tom Davis',
     author_email='tom@recursivedream.com',
-    url='http://recursivedream.com',
+    url='http://docs.recursivedream.com/django-publish/',
     license='BSD',
     packages=find_packages('src'),
     package_dir = {'': 'src'},
