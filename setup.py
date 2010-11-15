@@ -8,7 +8,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 NEWS = open(os.path.join(here, 'NEWS')).read()
 
-version = '0.1'
+version = '1.0'
 
 install_requires = [
     'docutils==0.7',
@@ -20,7 +20,14 @@ setup(name='django-publish',
     description="cli publishing of blog articles to a django-articles blog.",
     long_description=README + '\n\n' + NEWS,
     classifiers=[
-      # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
+        'Development Status :: 5 - Production/Stable',
+        'Environment :: Console',
+        'Framework :: Django',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: BSD License',
+        'Natural Language :: English',
+        'Programming Language :: Python :: 2.6',
+        'Topic :: Text Processing :: Markup'
     ],
     keywords='django django-articles reST publish blog',
     author='Tom Davis',
