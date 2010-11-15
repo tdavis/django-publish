@@ -1,6 +1,6 @@
 from datetime import datetime
 from articles.models import ArticleStatus
-from publish.filters import article_slugs, tags
+from publish.filters import article_slugs, article_tags
 from django.conf import settings
 from django.contrib.auth.models import User
 
@@ -12,12 +12,13 @@ DB = getattr(settings, 'PUBLISH_DB', 'default')
 FIELD_DEFAULTS = {
     'use_addthis': False,
     'status': 'Finished',
+    'addthis': 'nobody'
 }
 
 # Default filters / transformations for fields
 FILTER_DEFAULTS = {
     'title': lambda title: title,
-    'tags': tags,
+    'tags': article_tags,
     'keywords': lambda kw: kw,
     'description': lambda desc: desc.replace('\n', ' '),
     'follow-up': article_slugs,
