@@ -42,6 +42,7 @@ A few  configuration options exist for django-publish; they should be placed in
 
 .. topic:: PUBLISH_FIELD_DEFAULTS
 
-   Allows you to define default values for arbitrary fields.
-   See :ref:`available-tags` for what can be defined. 
+   Allows you to define default values for arbitrary fields. This should be a
+   dictionary of the form ``{ tag: value, ... }``.  See :ref:`available-tags`
+   for what can be defined. 
 

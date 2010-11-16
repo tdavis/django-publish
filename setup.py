@@ -1,5 +1,3 @@
-from distribute_setup import use_setuptools
-use_setuptools()
 import sys, os
 from setuptools import setup, find_packages
 
@@ -8,7 +6,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 NEWS = open(os.path.join(here, 'NEWS')).read()
 
-version = '1.0.1'
+version = '1.0.2'
 
 install_requires = [
     'docutils==0.7',
