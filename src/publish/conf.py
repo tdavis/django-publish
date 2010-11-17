@@ -12,7 +12,8 @@ DB = getattr(settings, 'PUBLISH_DB', 'default')
 FIELD_DEFAULTS = {
     'use_addthis': False,
     'status': 'Finished',
-    'addthis': 'nobody'
+    'addthis': 'nobody',
+    'login_required': False
 }
 
 # Default filters / transformations for fields
