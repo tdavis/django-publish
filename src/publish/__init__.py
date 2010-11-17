@@ -97,7 +97,7 @@ def main():
                         help='Publish as a draft only', dest='draft')
     parser.add_argument('--noactive', action='store_false', default=True,
                         help='Make the article "inactive"', dest='is_active')
-    parser.add_argument('--login', action='store_false', default=True,
+    parser.add_argument('--login', action='store_true', default=False,
                         help='Require a login to view the article',
                         dest='login_required')
     parser.add_argument('--publish -p', type=str, metavar='YYYY-MM-DD HH:MM',
