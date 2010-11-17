@@ -6,7 +6,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 NEWS = open(os.path.join(here, 'NEWS')).read()
 
-version = '1.0.3'
+version = '1.0.4'
 
 install_requires = [
     'docutils==0.7',
