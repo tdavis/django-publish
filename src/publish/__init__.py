@@ -67,6 +67,7 @@ def publish(f, draft, by=None, publish=None, is_active=True, login_required=Fals
         article = Article()
 
     article.content = content
+    article.markup = 'h'
 
     todo = []
     keys = list(meta.keys())
